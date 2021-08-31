@@ -26,13 +26,14 @@ public class SavingAccount extends Account{
     }
 
     //TODO: GoalAmount getter 구현
-
     public BigDecimal getGoalAmount() {
         return goalAmount;
     }
 
     //TODO: getAccountInfo를 재정의하여 "목표 금액"도 노출해줍니다.
-    public void getAccountInfo(Account account) {
+    public void getAccountInfo(SavingAccount account) {
         //TODO
+        System.out.printf("계좌종류: %s | 계좌번호: %s | 계좌주명: %s | 잔액: %s원 | 목표금액: %s",
+                account.category, account.accNo, account.owner, account.balance, account.goalAmount);
     }
 }
