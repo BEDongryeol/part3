@@ -134,7 +134,7 @@ public class Bank{
             if (account == null) {
                 throw new InputMismatchException("계좌 생성에 실패하였습니다.");
             }
-            if owner.matches("[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣+]"){
+            if (!(owner.matches("[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣+]"))) {
                 throw new InputMismatchException("올바른 이름이 아닙니다.");
             }
         }
@@ -143,7 +143,12 @@ public class Bank{
 
     public Account findAccount(String accNo){
         //TODO: 계좌리스트에서 찾아서 반환하는 메서드 구현
-
+        Account account = null;
+        for (Account acc : bankList) {
+            if (acc.getAccNo() == accNo) {
+                account = acc;
+            }
+        }
         return account;
     }
 
