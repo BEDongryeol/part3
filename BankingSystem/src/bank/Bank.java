@@ -14,6 +14,7 @@ public class Bank{
     protected static int seq = 0;
     public static DecimalFormat df = new DecimalFormat("#,###");
 
+    ArrayList<Account> bankList = CentralBank.getInstance().getAccountList();
 
     // 뱅킹 시스템의 기능들
     public void withdraw() throws Exception {
@@ -25,8 +26,6 @@ public class Bank{
         SavingInterestCalculator saving = new SavingInterestCalculator();
         bankHash.put("N", basic);
         bankHash.put("S", saving);
-
-        ArrayList<Account> bankList = CentralBank.getInstance().getAccountList();
 
         // 계좌번호 입력
         Account account = null;
@@ -58,7 +57,8 @@ public class Bank{
 
         try {
             account.withdraw(withMoney);
-            accInt.getInterest(account.getBalance());
+            System.out.println(withMoney + "원이 출금되었습니다. 잔액은 " + account.getBalance() + "원입니다.");
+            System.out.println("잔액 " + account.getBalance() + "의 이자는 " + accInt.getInterest(account.getBalance()) + "원 입니다.");
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -67,12 +67,34 @@ public class Bank{
     public void deposit(){
         //TODO: 입금 메서드 구현
         // 존재하지 않는 계좌이면 다시 물어보기
-        System.out.println("\n입금하시려는 계좌번호를 입력해주세요.");
+        int count = 0;
+        int trial = 0;
+        Account account = null;
+
+        while (count == 1 || trial > 5) {
+            trial++;
+            System.out.println("\n입금하시려는 계좌번호를 입력해주세요. 남은 시도 가능 횟수는 " + (5-trial) + "회입니다.");
+            Scanner scanner = new Scanner(System.in);
+            String accNo = scanner.next();
+
+            for (Account acc : bankList) {
+                if (acc.getAccNo() == accNo) {
+                    count++;
+                    account = acc;
+                }
+            }
+        }
+
+        if (trial == 6) {
+            System.out.println("가능 횟수를 초과하였습니다.");
+            return;
+        }
 
         // TODO: 입금 처리
         System.out.println("\n입금할 금액을 입력하세요.");
-
-    }
+        Scanner scanner = new Scanner(System.in);
+        BigDecimal amount = scanner.nextBigDecimal();
+        account.deposit(amount);
 
     public Account createAccount() throws InputMismatchException {
         //TODO: 계좌 생성하는 메서드 구현
