@@ -152,21 +152,72 @@ public class Bank{
         return account;
     }
 
-    public void transfer() throws Exception{
+    public void transfer() throws NullPointerException{
         //TODO: 송금 메서드 구현
         // 잘못 입력하거나 예외처리시 다시 입력가능하도록
-        //TODO
-        System.out.println("\n송금하시려는 계좌번호를 입력해주세요.");
-        //TODO
-        System.out.println("\n어느 계좌번호로 보내시려나요?");
-        //TODO
-        System.out.println("\n본인 계좌로의 송금은 입금을 이용해주세요.");
-        //TODO
-        System.out.println("\n적금 계좌로는 송금이 불가합니다.");
-        //TODO
-        System.out.println("\n송금할 금액을 입력하세요.");
-        //TODO
+        Scanner scan = new Scanner(System.in);
+        String accFr = null; //보내는 계좌
+        String accTo = null; //받는 계좌
+        BigDecimal amount; //송금 금액
+
+        try{
+            System.out.println("\n송금하시려는 계좌번호를 입력해주세요.");
+            accFr = scan.next();
+        } catch (NullPointerException e) {
+            System.out.println(e);
+            System.out.println("\n송금하시려는 계좌번호를 입력해주세요.");
+            accFr = scan.next();
+        } catch (Exception e) {
+            if (!(accFr.matches("^[0-9]+$"))) {
+                System.out.println("올바른 계좌 형식이 아닙니다.");
+            }
+            System.out.println("\n송금하시려는 계좌번호를 입력해주세요.");
+            accFr = scan.next();
         }
+
+        try{
+            System.out.println("\n어느 계좌번호로 보내시려나요?");
+            accTo = scan.next();
+        } catch (NullPointerException e) {
+            System.out.println(e);
+            System.out.println("\n어느 계좌번호로 보내시려나요?");
+            accTo = scan.next();
+        } catch (Exception e) {
+            if (!(accTo.matches("^[0-9]+$"))) {
+                System.out.println("올바른 계좌 형식이 아닙니다.");
+            }
+            if (accFr == accTo) {
+                System.out.println("\n본인 계좌로의 송금은 입금을 이용해주세요.");
+            }
+            System.out.println("\n어느 계좌번호로 보내시려나요?");
+            accTo = scan.next();
+        }
+
+        try {
+            System.out.println("\n송금할 금액을 입력하세요. (숫자만 입력하세요)");
+            amount = scan.nextBigDecimal();
+        } catch (NullPointerException e) {
+            System.out.println("금액을 입력해주세요");
+            System.out.println("\n송금할 금액을 입력하세요. (숫자만 입력하세요)");
+            amount = scan.nextBigDecimal();
+        } catch (InputMismatchException e) {
+            System.out.println("올바른 금액을 입력하세요.");
+            System.out.println("\n송금할 금액을 입력하세요. (숫자만 입력하세요)");
+            amount = scan.nextBigDecimal();
+        }
+
+
+
+
+        Account accountFrom = findAccount(accFr);
+        Account accountTo = findAccount(accTo);
+
+        if (accountTo.getCategory() == "S"){
+            System.out.println("\n적금 계좌로는 송금이 불가합니다.");
+        }
+
+
+    }
 
 
 }
