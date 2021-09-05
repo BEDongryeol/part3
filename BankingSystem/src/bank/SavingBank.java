@@ -16,7 +16,9 @@ public class SavingBank extends Bank {
         // throws Exception 적금 계좌는 잔액이 목표 금액(%s원) 이상이어야 출금 가능합니다.
         BigDecimal bal = account.getBalance();
         BigDecimal goal = account.getGoalAmount();
-
+        if (bal.compareTo(goal) < 0) {
+            throw new Exception("목표 금액에 미달되어 출금할 수 없습니다.");
+        }
     }
 
     // TODO: 목표금액을 입력받아서 SavingAccount 객체 생성하도록 재정의
@@ -31,7 +33,7 @@ public class SavingBank extends Bank {
             // 계좌번호 채번
             // 계좌번호는 "0000"+증가한 seq 포맷을 가진 번호입니다.
             seq++;
-            String accNo = df.format(seq);
+            String accNo = "0000"+seq;
 
             // 이름 등록
             System.out.println("이름을 입력하세요");
@@ -48,22 +50,11 @@ public class SavingBank extends Bank {
 
             // 계좌 생성
             account = new SavingAccount(accNo, owner, balance, goalAmount);
-
+            System.out.println(owner + "님의 적금 계좌가 생성되었습니다. (계좌번호 : " +accNo+")");
 
         }catch (NoSuchElementException e){
             //TODO: 오류 throw
-            if (owner == null) {
-                throw new NoSuchElementException("이름은 null이 될 수 없습니다.");
-            }
-            if (owner.length() <= 1) {
-                throw new NoSuchElementException("이름이 너무 짧습니다.");
-            }
-            if (account == null) {
-                throw new NoSuchElementException("계좌 생성에 실패하였습니다.");
-            }
-            if (!(owner.matches("[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣+]"))) {
-                throw new NoSuchElementException("올바른 이름이 아닙니다.");
-            }
+           throw e;
         }
         return account;
     }

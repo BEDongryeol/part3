@@ -12,6 +12,6 @@ public class SavingInterestCalculator implements InterestCalculator{
         } else {
             interest = BigDecimal.valueOf(1);
         }
-        return null;
+        return balance.multiply(interest.multiply(BigDecimal.valueOf(0.01)));
     }
 }

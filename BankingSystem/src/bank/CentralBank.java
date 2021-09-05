@@ -12,7 +12,7 @@ public class CentralBank {
     private CentralBank(){}
 
     //TODO: accountList(Account로 이루어진 ArrayList)
-    public static ArrayList<Account> accountList = new ArrayList<>();
+    ArrayList<Account> accountList;
 
     //TODO: BANK_NAME(은행명)
     public static final String BANK_NAME = "동렬은행";
