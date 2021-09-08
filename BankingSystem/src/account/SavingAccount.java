@@ -17,11 +17,9 @@ public class SavingAccount extends Account{
 
     public SavingAccount(String accNo, String owner, BigDecimal balance, BigDecimal goalAmount) {
         // TODO
+        super(accNo, owner, balance);
         this.isActive = true;
         this.category = "S";
-        this.accNo = accNo;
-        this.owner = owner;
-        this.balance = balance;
         this.goalAmount = goalAmount;
     }
 

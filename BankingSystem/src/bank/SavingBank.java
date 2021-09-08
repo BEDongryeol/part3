@@ -2,6 +2,7 @@ package bank;
 
 import account.Account;
 import account.SavingAccount;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -17,45 +18,59 @@ public class SavingBank extends Bank {
         BigDecimal bal = account.getBalance();
         BigDecimal goal = account.getGoalAmount();
         if (bal.compareTo(goal) < 0) {
-            throw new Exception("목표 금액에 미달되어 출금할 수 없습니다.");
+            System.out.println("목표 금액에 미달되어 출금할 수 없습니다.");
+        } else {
+            flag = true;
         }
     }
 
     // TODO: 목표금액을 입력받아서 SavingAccount 객체 생성하도록 재정의
     @Override
-    public SavingAccount createAccount() throws NoSuchElementException{
-        SavingAccount account = null;
-        String owner = null;
+    public SavingAccount createAccount() throws Exception{
+        //TODO: 계좌 생성하는 메서드 구현
+        SavingAccount account;
+        String owner;
         BigDecimal balance;
         BigDecimal goalAmount;
 
+        seq++;
         try {
             // 계좌번호 채번
             // 계좌번호는 "0000"+증가한 seq 포맷을 가진 번호입니다.
-            seq++;
             String accNo = "0000"+seq;
-
-            // 이름 등록
-            System.out.println("이름을 입력하세요");
-            Scanner scan = new Scanner(System.in);
-            owner = scan.next();
-
-            // 입금액
-            System.out.println("입금액을 입력하세요");
-            balance = scan.nextBigDecimal();
-
+            // 이름 입력
+            owner = checkName();
+            // 입금액 입력
+            balance = checkAmountIn();
             // 목표 금액
-            System.out.println("목표 금액을 입력하세요");
-            goalAmount = scan.nextBigDecimal();
-
+            goalAmount = checkGoalAmount();
             // 계좌 생성
             account = new SavingAccount(accNo, owner, balance, goalAmount);
-            System.out.println(owner + "님의 적금 계좌가 생성되었습니다. (계좌번호 : " +accNo+")");
+            System.out.println(owner + "님의 일반 계좌가 생성되었습니다. (계좌번호 : " +accNo+")");
 
-        }catch (NoSuchElementException e){
+        } catch (Exception e){
             //TODO: 오류 throw
-           throw e;
+            throw e;
         }
         return account;
+    }
+
+    public BigDecimal checkGoalAmount() {
+        BigDecimal balance = null;
+        try {
+            // 입금액
+            System.out.println("목표 금액을 숫자로 입력하세요");
+            balance = scanner.nextBigDecimal();
+            if (balance.compareTo(BigDecimal.ZERO) <= 0) {
+                scanner.nextLine();
+                System.out.println("\n목표 금액은 0원 이하일 수 없습니다.");
+                this.checkAmountIn();
+            }
+        } catch (InputMismatchException e) {
+            scanner.nextLine();
+            System.out.println("\n숫자로만 입력해주세요");
+            this.checkAmountIn();
+        }
+        return balance;
     }
 }

@@ -32,6 +32,7 @@ public class BankTest {
                     int sizeOfBank = centralBank.getAccountList().size();
                     for (int i=0; i<sizeOfBank; i++) {
                         centralBank.getAccountList().get(i).getAccountInfo(centralBank.getAccountList().get(i));
+                        System.out.println();
                     }
                     break;
                 case 2:
